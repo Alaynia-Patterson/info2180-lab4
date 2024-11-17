@@ -63,10 +63,35 @@ $superheroes = [
   ], 
 ];
 
+//Check if the query exists
+if(isset($_GET['query']) && !empty($_GET['query'])){
+    $query = strtolower(trim($_GET['query']));
+    $found = false;
+
+
+    //Searches for superheroes by alias or name
+    foreach($superheroes as $superhero){
+        if (strtolower($superhero['name']) === $query || strtolower($superhero['alias']) === $query){
+            echo "<h3>" . htmlspecialchars($superhero['alias']) . "</h3>";
+            echo "<h4>A.K.A" . htmlspecialchars($superhero['name']) . "</h4>";
+            echo "<p>" . htmlspecialchars($superhero['biography']) . "</p>";
+            $found = true;
+            break;
+        }
+    }
+
+    if(!$found){
+        echo "<p class='error'>SUPERHERO NOT FOUND.</p>";
+    }
+} else{
+    echo "<ul>";
+    foreach ($superheroes as $superhero) {
+        echo "<li>" . htmlspecialchars ($superhero['alias']) . "</li>";
+    }
+    echo "</ul>";
+    
+}
 ?>
 
-<ul>
-<?php foreach ($superheroes as $superhero): ?>
-  <li><?= $superhero['alias']; ?></li>
-<?php endforeach; ?>
-</ul>
+
+
